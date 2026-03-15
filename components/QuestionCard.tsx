@@ -2,6 +2,8 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Question } from '@/lib/types';
+import { useLang } from '@/lib/LangContext';
+import { questionsEn } from '@/lib/questions.en';
 
 interface QuestionCardProps {
   question: Question;
@@ -10,11 +12,11 @@ interface QuestionCardProps {
   onSelect: (index: number) => void;
 }
 
-const frameworkLabel: Record<Question['framework'], string> = {
-  mbti: 'MBTI',
-  bigfive: 'Big Five',
-  enneagram: '에니어그램',
-  attachment: '애착 유형',
+const frameworkLabel: Record<Question['framework'], { ko: string; en: string }> = {
+  mbti: { ko: 'MBTI', en: 'MBTI' },
+  bigfive: { ko: 'Big Five', en: 'Big Five' },
+  enneagram: { ko: '에니어그램', en: 'Enneagram' },
+  attachment: { ko: '애착 유형', en: 'Attachment Style' },
 };
 
 const frameworkColor: Record<Question['framework'], string> = {
@@ -26,12 +28,15 @@ const frameworkColor: Record<Question['framework'], string> = {
 
 const optionLabels = ['A', 'B', 'C', 'D'];
 
-export default function QuestionCard({
-  question,
-  questionNumber,
-  selectedOption,
-  onSelect,
-}: QuestionCardProps) {
+export default function QuestionCard({ question, questionNumber, selectedOption, onSelect }: QuestionCardProps) {
+  const { lang } = useLang();
+
+  const enQ = questionsEn.find((q) => q.id === question.id);
+  const questionText = lang === 'en' && enQ ? enQ.text : question.text;
+  const options = lang === 'en' && enQ
+    ? question.options.map((opt, i) => ({ ...opt, text: enQ.options[i] }))
+    : question.options;
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -42,22 +47,19 @@ export default function QuestionCard({
         transition={{ duration: 0.3, ease: 'easeInOut' }}
         className="w-full"
       >
-        {/* Framework badge */}
         <div className="mb-4">
           <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${frameworkColor[question.framework]}`}>
-            {frameworkLabel[question.framework]}
+            {frameworkLabel[question.framework][lang]}
           </span>
         </div>
 
-        {/* Question */}
         <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-8 leading-relaxed">
           <span className="text-indigo-500 mr-2">Q{questionNumber}.</span>
-          {question.text}
+          {questionText}
         </h2>
 
-        {/* Options */}
         <div className="space-y-3">
-          {question.options.map((option, index) => {
+          {options.map((option, index) => {
             const isSelected = selectedOption === index;
             return (
               <motion.button
@@ -71,13 +73,7 @@ export default function QuestionCard({
                     : 'border-gray-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/30'
                 }`}
               >
-                <span
-                  className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
-                    isSelected
-                      ? 'bg-indigo-500 text-white'
-                      : 'bg-gray-100 text-gray-500'
-                  }`}
-                >
+                <span className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${isSelected ? 'bg-indigo-500 text-white' : 'bg-gray-100 text-gray-500'}`}>
                   {optionLabels[index]}
                 </span>
                 <span className={`text-base leading-relaxed pt-0.5 ${isSelected ? 'text-indigo-800 font-medium' : 'text-gray-700'}`}>
