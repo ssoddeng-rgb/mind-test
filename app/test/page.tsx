@@ -20,18 +20,19 @@ export default function TestPage() {
   const isLastQuestion = currentIndex === totalQuestions - 1;
 
   const handleSelect = (optionIndex: number) => {
-    setAnswers((prev) => ({ ...prev, [currentQuestion.id]: optionIndex }));
-  };
+    const newAnswers = { ...answers, [currentQuestion.id]: optionIndex };
+    setAnswers(newAnswers);
 
-  const handleNext = () => {
-    if (selectedOption === undefined) return;
-    if (isLastQuestion) {
-      const result = computeResult(answers);
-      localStorage.setItem('mindtest_result', JSON.stringify(result));
-      router.push('/result');
-    } else {
-      setCurrentIndex((i) => i + 1);
-    }
+    // 선택 즉시 자동 이동 (마지막 문항이면 결과로)
+    setTimeout(() => {
+      if (isLastQuestion) {
+        const result = computeResult(newAnswers);
+        localStorage.setItem('mindtest_result', JSON.stringify(result));
+        router.push('/result');
+      } else {
+        setCurrentIndex((i) => i + 1);
+      }
+    }, 300); // 선택 피드백 애니메이션 후 이동
   };
 
   const handlePrev = () => {
@@ -57,8 +58,8 @@ export default function TestPage() {
             onSelect={handleSelect}
           />
 
-          {/* Navigation */}
-          <div className="flex gap-3 mt-8">
+          {/* 이전 버튼만 남김 */}
+          <div className="mt-6">
             <AnimatePresence>
               {currentIndex > 0 && (
                 <motion.button
@@ -66,23 +67,12 @@ export default function TestPage() {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -10 }}
                   onClick={handlePrev}
-                  className="px-6 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-semibold hover:border-gray-300 hover:bg-gray-50 transition-all"
+                  className="px-6 py-3 rounded-xl border-2 border-gray-200 text-gray-500 font-semibold hover:border-gray-300 hover:bg-gray-50 transition-all text-sm"
                 >
-                  ← 이전
+                  ← 이전 문항으로
                 </motion.button>
               )}
             </AnimatePresence>
-            <button
-              onClick={handleNext}
-              disabled={selectedOption === undefined}
-              className={`flex-1 py-3 rounded-xl font-bold text-base transition-all duration-200 ${
-                selectedOption !== undefined
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md hover:shadow-lg active:scale-[0.98]'
-                  : 'bg-gray-100 text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              {isLastQuestion ? '결과 보기 ✨' : '다음 →'}
-            </button>
           </div>
         </div>
       </div>
