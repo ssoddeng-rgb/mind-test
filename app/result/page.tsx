@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { TestResult } from '@/lib/types';
 import ResultReport from '@/components/ResultReport';
 import ShareButton, { decodeResult } from '@/components/ShareButton';
+import CommentBox from '@/components/CommentBox';
 import LangToggle from '@/components/LangToggle';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -26,7 +27,19 @@ function ResultContent() {
     }
     const stored = localStorage.getItem('mindtest_result');
     if (!stored) { router.replace('/test'); return; }
-    setResult(JSON.parse(stored));
+    const parsed: TestResult = JSON.parse(stored);
+    setResult(parsed);
+
+    // 통계 자동 제출 (중복 방지)
+    const key = `stat_submitted_${stored.slice(0, 20)}`;
+    if (!sessionStorage.getItem(key)) {
+      sessionStorage.setItem(key, '1');
+      fetch('/api/stats', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mbti: parsed.mbti, enneagram: parsed.enneagram, attachment: parsed.attachment }),
+      }).catch(() => {});
+    }
   }, [router, searchParams]);
 
   if (!result) {
@@ -94,6 +107,11 @@ function ResultContent() {
 
         <div className="max-w-xl mx-auto px-4 py-8">
           <ResultReport result={result} />
+
+          {/* 댓글 */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1 }} className="mb-4">
+            <CommentBox mbti={result.mbti} />
+          </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1 }} className="space-y-3 pb-4">
             <ShareButton result={result} />

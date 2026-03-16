@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Footer from '@/components/Footer';
 import LangToggle from '@/components/LangToggle';
+import StatsSection from '@/components/StatsSection';
 import { useLang } from '@/lib/LangContext';
 
 export default function HomePage() {
@@ -134,6 +135,11 @@ export default function HomePage() {
                 </div>
               ))}
             </div>
+          </motion.section>
+
+          {/* Stats */}
+          <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.1 }} className="mb-8">
+            <StatsSection />
           </motion.section>
         </motion.div>
       </main>
