@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mind-test.pages.dev/sitemap.xml
+Sitemap: https://mind-test-4qc.pages.dev/sitemap.xml

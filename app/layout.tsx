@@ -4,7 +4,7 @@ import CookieBanner from '@/components/CookieBanner';
 import { LangProvider } from '@/lib/LangContext';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://mind-test.pages.dev'),
+  metadataBase: new URL('https://mind-test-4qc.pages.dev'),
   title: {
     default: '마음 탐구 — 종합 심리 유형 검사 | Mind Explorer',
     template: '%s | Mind Explorer',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   publisher: 'Mind Explorer',
   robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
   alternates: {
-    canonical: 'https://mind-test.pages.dev',
+    canonical: 'https://mind-test-4qc.pages.dev',
   },
   openGraph: {
     title: '마음 탐구 — 종합 심리 유형 검사',
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     alternateLocale: 'en_US',
     siteName: '마음 탐구 / Mind Explorer',
-    url: 'https://mind-test.pages.dev',
+    url: 'https://mind-test-4qc.pages.dev',
   },
   twitter: {
     card: 'summary',

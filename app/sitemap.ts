@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = 'https://mind-test.pages.dev';
+  const base = 'https://mind-test-4qc.pages.dev';
   return [
     { url: base, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
     { url: `${base}/test`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
