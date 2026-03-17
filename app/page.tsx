@@ -27,6 +27,15 @@ export default function HomePage() {
       aboutTitle: '마음 탐구란?',
       aboutDesc: '심리학 분야에서 검증된 4가지 이론을 하나의 테스트로 통합하여 더 입체적인 자기 이해를 돕는 무료 심리 탐구 도구입니다.',
       aboutMore: '더 자세한 소개 →',
+      guideTitle: '📚 심리학 심층 가이드',
+      guideDesc: 'MBTI, Big Five, 에니어그램, 애착 유형에 대한 심층 심리학 콘텐츠를 읽어보세요.',
+      guideLink: '전체 가이드 보기 →',
+      guideItems: [
+        { href: '/guide/mbti', label: 'MBTI 완전 정복', sub: '16가지 유형 총정리' },
+        { href: '/guide/big-five', label: 'Big Five 이해하기', sub: 'OCEAN 5요인 심층 분석' },
+        { href: '/guide/enneagram', label: '에니어그램 9유형', sub: '핵심 두려움과 욕구' },
+        { href: '/guide/attachment-style', label: '애착 유형 가이드', sub: '관계 패턴의 심리학' },
+      ],
       howTitle: '검사 방법',
       howSteps: [
         { icon: '1', title: '시작하기', desc: '아래 버튼을 눌러 테스트를 시작하세요. 회원가입 불필요.' },
@@ -61,6 +70,15 @@ export default function HomePage() {
       aboutTitle: 'What is Mind Explorer?',
       aboutDesc: 'A free self-exploration tool that integrates 4 evidence-based psychological theories into a single test for a more complete picture of who you are.',
       aboutMore: 'Learn more →',
+      guideTitle: '📚 Psychology Deep Dives',
+      guideDesc: 'In-depth guides on MBTI, Big Five, Enneagram, and Attachment Theory.',
+      guideLink: 'See all guides →',
+      guideItems: [
+        { href: '/guide/mbti', label: 'Complete MBTI Guide', sub: 'All 16 types explained' },
+        { href: '/guide/big-five', label: 'Big Five Model', sub: 'OCEAN dimensions in depth' },
+        { href: '/guide/enneagram', label: 'Enneagram Types', sub: 'Core fears & desires' },
+        { href: '/guide/attachment-style', label: 'Attachment Styles', sub: 'Psychology of relationships' },
+      ],
       howTitle: 'How It Works',
       howSteps: [
         { icon: '1', title: 'Start for Free', desc: 'No sign-up required. Just click the button to begin.' },
@@ -133,6 +151,24 @@ export default function HomePage() {
               {t.cta}
             </Link>
           </motion.div>
+
+          {/* Guide Section */}
+          <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }} className="text-left mb-12">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-black text-gray-900">{t.guideTitle}</h2>
+              <Link href="/guide" className="text-sm text-indigo-600 font-semibold hover:underline">{t.guideLink}</Link>
+            </div>
+            <p className="text-gray-600 text-sm mb-4">{t.guideDesc}</p>
+            <div className="grid grid-cols-2 gap-3">
+              {t.guideItems.map((g) => (
+                <Link key={g.href} href={g.href}
+                  className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm hover:border-indigo-200 hover:shadow-md transition-all">
+                  <p className="font-bold text-gray-800 text-sm">{g.label}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{g.sub}</p>
+                </Link>
+              ))}
+            </div>
+          </motion.section>
 
           {/* About */}
           <motion.section initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }} className="text-left mb-12">
